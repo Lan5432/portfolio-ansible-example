@@ -1,0 +1,30 @@
+- name: Copy in the site config for the local page
+  register: addconfig
+  ansible.builtin.template:
+    src: local-page.conf.j2
+    dest: '/etc/nginx/sites-available/{{ local_page_domain }}.conf'
+    owner: root
+    group: root
+    validate: "nginx -t -c %s"
+
+- name: Enable the local page site config
+  ansible.builtin.file:
+    src: '/etc/nginx/sites-available/{{ local_page_domain }}.conf'
+    dest: '/etc/nginx/sites-enabled/{{ local_page_domain }}.conf'
+    state: link
+  when: not ansible_check_mode
+
+- name: Copy the HTML file
+  ansible.builtin.file:
+    dest: '/var/www/{{ local_page_domain }}/public'
+    mode: u=rx,g=rx,o=rx
+    state: directory
+    owner: www-data
+    group: www-data
+
+- name: Including domain simple in the hosts file
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: '127.0.0.1 {{ local_page_domain }}'
+    insertafter: EOF
+    state: present

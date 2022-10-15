@@ -1,0 +1,18 @@
+galaxy_info:
+  author: Lan5432
+  description: Simple role to configure an Nginx server that proxies to a Python app.
+
+  # Choose a valid license ID from https://spdx.org - some suggested licenses:
+  # - BSD-3-Clause (default)
+  # - MIT
+  # - GPL-2.0-or-later
+  # - GPL-3.0-only
+  # - Apache-2.0
+  # - CC-BY-4.0
+  license: Apache 2.0
+
+  min_ansible_version: 2.1
+
+  galaxy_tags: [ngingx, html, web, proxy]
+
+dependencies: []

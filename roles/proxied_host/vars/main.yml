@@ -1,0 +1,5 @@
+---
+# vars file for python
+domain_python: python.local
+domain_go: golang.local
+ansible_become_password: EIOLinux2022$

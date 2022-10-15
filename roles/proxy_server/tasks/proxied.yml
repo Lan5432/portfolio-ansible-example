@@ -1,0 +1,29 @@
+- name: Copy in the site config for the app host
+  register: addconfig
+  ansible.builtin.template:
+    src: proxied.conf.j2
+    dest: '/etc/nginx/sites-available/proxied.conf'
+    owner: root
+    group: root
+    validate: "nginx -t -c %s"
+
+- name: Enable the proxied site config
+  ansible.builtin.file:
+    src: '/etc/nginx/sites-available/proxied.conf'
+    dest: '/etc/nginx/sites-enabled/proxied.conf'
+    state: link
+  when: not ansible_check_mode
+
+- name: Including domain for python
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: '127.0.0.1 {{ python_app_domain }}'
+    insertafter: EOF
+    state: present
+
+- name: Including domain for golang
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: '127.0.0.1 {{ golang_host_domain }}'
+    insertafter: EOF
+    state: present

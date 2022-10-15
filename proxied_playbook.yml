@@ -1,0 +1,16 @@
+---
+- hosts: proxy_host
+  become: yes
+  become_user: root
+  become_method: sudo
+  roles:
+    - role: proxy_server
+      vars:
+        app_host_ip: 192.168.56.11
+        python_app_port: 7523
+        python_app_domain: "python.remote"
+        golang_host_ip: 192.168.56.11
+        golang_app_port: 2213
+        golang_host_domain: "golang.remote"
+
+

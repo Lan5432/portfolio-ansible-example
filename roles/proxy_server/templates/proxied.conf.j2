@@ -1,0 +1,21 @@
+server {
+    listen 80 default_server;
+    server_name {{ python_app_domain }} www.{{ python_app_domain }};
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass {{ app_host_ip }}:{{ python_app_port }}
+    }
+
+    access_log /var/log/nginx/{{ python_app_domain }}.log;
+    error_log /var/log/nginx/{{ python_app_domain }}-error.log error;
+}
+
+server {
+    listen 80 default_server;
+    server_name {{ golang_host_domain }} www.{{ golang_host_domain }};
+
+    location / {
+        proxy_pass {{ golang_host_ip }}:{{ golang_app_port }}
+    }
+}
