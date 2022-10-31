@@ -1,12 +1,12 @@
 Role Name
 =========
 
-Simple role to create an Nginx server with its own page and a proxy to two apps, a Python and a Golang one.
+Simple role to create an proxy_server server with its own page and a proxy to two apps, a Python and a Golang one.
 
 Requirements
 ------------
 
-No requirements.
+community.general.ufw.
 
 Role Variables
 --------------
@@ -24,7 +24,7 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: servers
       roles:
-         - proxy_nginx
+         - proxy_server
            vars:
              app_host: 192.168.56.11
 

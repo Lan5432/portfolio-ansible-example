@@ -1,4 +1,3 @@
 ---
-# vars file for nginx
-local_page_domain: local.page
+# vars file for proxy_server
 ansible_become_password: EIOLinux2022$

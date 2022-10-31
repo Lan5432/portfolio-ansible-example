@@ -1,0 +1,8 @@
+---
+
+- name: Including domain for golang
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: '127.0.0.1 {{ golang_app_domain }}'
+    insertafter: EOF
+    state: present

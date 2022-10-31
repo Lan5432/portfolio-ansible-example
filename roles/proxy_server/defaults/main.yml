@@ -1,2 +1,15 @@
 ---
-# defaults file for nginx
+# defaults file for proxy_server
+
+# Domain for the hosts file of the system
+local_page_domain: local.page
+
+# The target host data that holds the Python app.
+python_app_ip: "127.0.0.1"
+python_app_port: '8693'
+python_app_domain: "python.remote"
+
+# The target host data that holds the Golang app.
+golang_app_ip: "127.0.0.1"
+golang_app_port: '3412'
+golang_app_domain: "golang.remote"

@@ -1,0 +1,48 @@
+---
+- name: Create user holder for the Python app
+  user: 
+    name: '{{ python_app_user }}'
+    group: '{{ python_app_user }}'
+    createhome: no
+
+- name: Install Python
+  apt:
+    pkg:
+      - python3-pip 
+      - python3-dev  
+      - python3-setuptools
+      - python3-venv
+      - build-essential  
+      - libssl-dev  
+      - libffi-dev
+    state: latest
+    update_cache: true
+
+- name: Move Python files
+  ansible.builtin.copy:
+    src: python_flask
+    dest: '{{ python_app_folder }}'
+    owner: '{{ python_app_user }}'
+    group: '{{ python_app_user }}'
+
+- name: Configure with the dev modules
+  ansible.builtin.pip:
+    requirements: '{{ python_app_requirements }}'
+    virtualenv: '{{ python_app_folder_venv }}'
+
+- name: Add uWSGI to the env
+  ansible.builtin.pip:
+    name: uWSGI
+    virtualenv: '{{ python_app_folder_venv }}'
+
+- name: Allow us to receive traffic meant for Flask
+  community.general.ufw:
+    rule: limit
+    port: '{{ python_app_port }}'
+
+- name: Including domain for python
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: '127.0.0.1 {{ python_app_domain }}'
+    insertafter: EOF
+    state: present

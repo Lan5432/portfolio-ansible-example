@@ -6,7 +6,7 @@ Create apps in servers meant to be proxied to.
 Requirements
 ------------
 
-No requirements.
+community.general.ufw.
 
 Role Variables
 --------------

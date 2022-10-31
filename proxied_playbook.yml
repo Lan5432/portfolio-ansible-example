@@ -6,11 +6,17 @@
   roles:
     - role: proxy_server
       vars:
-        app_host_ip: 192.168.56.11
-        python_app_port: 7523
-        python_app_domain: "python.remote"
-        golang_host_ip: 192.168.56.11
-        golang_app_port: 2213
-        golang_host_domain: "golang.remote"
-
-
+        - python_app_ip: 192.168.56.11
+        - python_app_port: 7523
+        - golang_app_ip: 192.168.56.11
+        - golang_app_port: 2213
+            
+- hosts: app_host
+  become: yes
+  become_user: root
+  become_method: sudo
+  roles:
+    - role: app_server
+      vars:
+        - python_app_port: 7523
+        - golang_app_port: 2213
