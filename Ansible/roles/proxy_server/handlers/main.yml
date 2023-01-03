@@ -4,10 +4,10 @@
    ansible.builtin.service:
      name: nginx
      state: started
-   when: not ansible_check_mode
+
      
  - name: Restart Nginx
    ansible.builtin.service:
      name: nginx
      state: reloaded
-   when: not ansible_check_mode
+

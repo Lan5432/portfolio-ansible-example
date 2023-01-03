@@ -1,0 +1,22 @@
+- name: Install UFW
+  ansible.builtin.apt:
+    pkg: ufw
+    state: present
+
+- name: Enable ufw
+  community.general.ufw:
+    state: enabled
+    policy: deny
+
+- name: Allow http
+  community.general.ufw:
+    rule: allow
+    port: 80 # Did not let me use http profile
+
+
+    - name: Including domain for python
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: '127.0.0.1 {{ python_app_domain }}'
+    insertafter: EOF
+    state: present

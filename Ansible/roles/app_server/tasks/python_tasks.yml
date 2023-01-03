@@ -34,15 +34,3 @@
   ansible.builtin.pip:
     name: uWSGI
     virtualenv: '{{ python_app_folder_venv }}'
-
-- name: Allow us to receive traffic meant for Flask
-  community.general.ufw:
-    rule: limit
-    port: '{{ python_app_port }}'
-
-- name: Including domain for python
-  ansible.builtin.lineinfile:
-    path: /etc/hosts
-    line: '127.0.0.1 {{ python_app_domain }}'
-    insertafter: EOF
-    state: present

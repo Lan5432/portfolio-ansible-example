@@ -1,0 +1,17 @@
+---
+- hosts: proxy_host
+  become: yes
+  become_method: sudo
+  remote_user: test
+  roles:
+    - role: proxy_server
+            
+- hosts: app_host
+  become: yes
+  become_method: sudo
+  remote_user: test
+  roles:
+    - role: app_server
+      vars:
+        - python_app_port: 9091
+        - golang_app_port: 9092

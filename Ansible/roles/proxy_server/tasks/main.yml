@@ -4,16 +4,6 @@
     upgrade: yes
     cache_valid_time: 3600
 
-- name: Enable ufw
-  community.general.ufw:
-    state: enabled
-    policy: deny
-
-- name: Allow http
-  community.general.ufw:
-    rule: allow
-    port: 80 # Did not let me use http profile
-
 - name: Install Nginx
   ansible.builtin.apt:
     pkg: nginx
@@ -33,18 +23,26 @@
     dest: /etc/nginx/sites-enabled/default
     state: absent
 
+
 - include_tasks: local_page.yml
 - include_tasks: apps_config.yml
     
+    
+- name: Find all files in var/www
+  ansible.builtin.command: >-
+    find /var/www/ -path /var/www/html -prune -o -type f -print
+  register: www_files
+
+- debug:
+    msg: "{{ www_files.stdout_lines }}"
+
 - name: All web permissions
   ansible.builtin.file:
     dest: '{{ item }}'
     mode: u=rx,g=rx,o=rx
-    state: directory
     owner: www-data
     group: www-data
     recurse: yes
   notify:
     - Restart Ngingx
-  with_fileglob:
-    - "/var/www/*"
+  loop: "{{ www_files.stdout_lines }}"

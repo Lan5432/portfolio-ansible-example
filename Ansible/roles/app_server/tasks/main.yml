@@ -5,10 +5,10 @@
     upgrade: yes
     cache_valid_time: 3600
 
-- name: Enable ufw
-  community.general.ufw:
-    state: enabled
-    policy: deny
+- name: Install Nginx
+  ansible.builtin.apt:
+    pkg: nginx
+    state: present
 
 - include_tasks: python_tasks.yml
 

@@ -5,7 +5,6 @@
     dest: '/etc/nginx/sites-available/{{ local_page_domain }}.conf'
     owner: root
     group: root
-    validate: "nginx -t -c %s"
 
 - name: Enable the local page site config
   ansible.builtin.file:
@@ -14,17 +13,16 @@
     state: link
   when: not ansible_check_mode
 
-- name: Copy the HTML file
+- name: Create local page folder
   ansible.builtin.file:
-    dest: '/var/www/{{ local_page_domain }}/public'
-    mode: u=rx,g=rx,o=rx
+    dest: '/var/www/{{ local_page_domain }}'
     state: directory
+  when: not ansible_check_mode
+
+- name: Copy the HTML file
+  ansible.builtin.copy:
+    src: local-page.html
+    dest: '/var/www/{{ local_page_domain }}/public.html'
+    mode: u=rx,g=rx,o=rx
     owner: www-data
     group: www-data
-
-- name: Including domain simple in the hosts file
-  ansible.builtin.lineinfile:
-    path: /etc/hosts
-    line: '127.0.0.1 {{ local_page_domain }}'
-    insertafter: EOF
-    state: present
