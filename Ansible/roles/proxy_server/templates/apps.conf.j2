@@ -1,10 +1,18 @@
+upstream python {
+    server {{ python_app_domain }}:{{ python_app_port }};
+}
+
+upstream golang {
+    server {{ golang_app_domain }}:{{ golang_app_port }};
+}
+
 server {
     listen 80;
-    server_name {{ python_app_domain }} www.{{ python_app_domain }};
+    server_name {{ python_app_domain }} {{ python_app_domain }};
 
     location / {
         include uwsgi_params;
-        uwsgi_pass {{ python_app_domain }}:{{ python_app_port }};
+        uwsgi_pass python;
     }
 
     access_log /var/log/nginx/{{ python_app_domain }}.log;
@@ -13,9 +21,9 @@ server {
 
 server {
     listen 80;
-    server_name {{ golang_app_domain }} www.{{ golang_app_domain }};
+    server_name {{ golang_app_domain }} {{ golang_app_domain }};
 
     location / {
-        proxy_pass {{ golang_app_domain }}:{{ golang_app_port }};
+        proxy_pass golang;
     }
 }

@@ -15,14 +15,14 @@
 
 - name: Create local page folder
   ansible.builtin.file:
-    dest: '/var/www/{{ local_page_domain }}'
+    dest: '/var/www/{{ local_page_domain }}/public'
     state: directory
   when: not ansible_check_mode
 
 - name: Copy the HTML file
   ansible.builtin.copy:
     src: local-page.html
-    dest: '/var/www/{{ local_page_domain }}/public.html'
+    dest: '/var/www/{{ local_page_domain }}/public/index.html'
     mode: u=rx,g=rx,o=rx
     owner: www-data
     group: www-data

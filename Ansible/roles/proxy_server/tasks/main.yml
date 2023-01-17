@@ -25,7 +25,7 @@
 
 
 - include_tasks: local_page.yml
-- include_tasks: apps_config.yml
+# - include_tasks: apps_config.yml
     
     
 - name: Find all files in var/www
@@ -33,16 +33,12 @@
     find /var/www/ -path /var/www/html -prune -o -type f -print
   register: www_files
 
-- debug:
-    msg: "{{ www_files.stdout_lines }}"
-
 - name: All web permissions
   ansible.builtin.file:
     dest: '{{ item }}'
     mode: u=rx,g=rx,o=rx
     owner: www-data
     group: www-data
-    recurse: yes
   notify:
     - Restart Ngingx
   loop: "{{ www_files.stdout_lines }}"
