@@ -1,16 +1,16 @@
 upstream python {
-    server {{ python_app_domain }}:{{ python_app_port }};
+    server {{ python_app_ip }}:{{ python_app_port }};
 }
 
 upstream golang {
-    server {{ golang_app_domain }}:{{ golang_app_port }};
+    server {{ golang_app_ip }}:{{ golang_app_port }};
 }
 
 server {
     listen 80;
-    server_name {{ python_app_domain }} {{ python_app_domain }};
+    server_name {{ python_app_domain }};
 
-    location / {
+    location /python {
         include uwsgi_params;
         uwsgi_pass python;
     }
@@ -21,9 +21,9 @@ server {
 
 server {
     listen 80;
-    server_name {{ golang_app_domain }} {{ golang_app_domain }};
+    server_name {{ golang_app_domain }};
 
-    location / {
+    location /golang {
         proxy_pass golang;
     }
 }

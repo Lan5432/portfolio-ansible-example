@@ -30,7 +30,7 @@
     
 - name: Find all files in var/www
   ansible.builtin.command: >-
-    find /var/www/ -path /var/www/html -prune -o -type f -print
+    find /var/www/ -path /var/www/html -prune -o -type f,d -print
   register: www_files
 
 - name: All web permissions
@@ -40,5 +40,5 @@
     owner: www-data
     group: www-data
   notify:
-    - Restart Ngingx
+    - Restart Nginx
   loop: "{{ www_files.stdout_lines }}"
