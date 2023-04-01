@@ -36,6 +36,14 @@
     name: uWSGI
     virtualenv: '{{ python_app_folder_venv }}'
 
+- name: Add config for uwsgi
+  ansible.builtin.template:
+    src: uwsgi.ini.j2
+    dest: '{{ python_app_folder }}/uwsgi.ini'
+    owner: '{{ python_app_user }}'
+    group: '{{ python_app_user }}'
+
+
 - name: Run uWSGI
   ansible.builtin.shell: >-
-    {{ python_app_folder_venv }}/bin/uwsgi --http :{{ python_app_port }} --wsgi-file {{ python_app_folder }}/main.py --callable app --logto {{ python_app_log_file }} &
+    {{ python_app_folder_venv }}/bin/uwsgi {{ python_app_folder }}/uwsgi.ini &

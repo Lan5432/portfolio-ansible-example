@@ -1,0 +1,7 @@
+[uwsgi]
+http = :{{ python_app_port }}
+wsgi-file = {{ python_app_folder }}/main.py
+callable = app
+logto = {{ python_app_log_file }}
+uid = {{ python_app_user }}
+gid = {{ python_app_user }}
