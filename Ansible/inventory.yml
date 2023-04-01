@@ -43,11 +43,8 @@
 
 #db-[99:101]-node.example.com
 
-[proxy_host]
-127.0.1.1:2022
-
-[app_host]
-127.0.1.1:2023
+proxy_host ansible_host=127.0.1.1 ansible_port=2022
+app_host ansible_host=127.0.1.1 ansible_port=2023
 
 [all:vars]
 ansible_become_pass=test
