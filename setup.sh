@@ -1,3 +1,3 @@
 #!/bin/bash
-source run-ssh-agent.sh
-source run-compose.sh up -d
+source ssh-agent.sh
+source compose.sh
