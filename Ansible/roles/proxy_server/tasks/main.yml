@@ -4,9 +4,11 @@
     upgrade: yes
     cache_valid_time: 3600
 
-- name: Install Nginx
+- name: Install necessary stuff
   ansible.builtin.apt:
-    pkg: nginx
+    pkg: 
+      - nginx
+      - acl
     state: present
   notify:
    - Start Nginx
@@ -25,12 +27,12 @@
 
 
 - include_tasks: local_page.yml
-# - include_tasks: apps_config.yml
+- include_tasks: apps_config.yml
     
     
 - name: Find all files in var/www
   ansible.builtin.command: >-
-    find /var/www/ -path /var/www/html -prune -o -type f,d -print
+    find /var/www/ -path /var/www/html -prune -o -print -type f,d
   register: www_files
 
 - name: All web permissions
@@ -42,3 +44,18 @@
   notify:
     - Restart Nginx
   loop: "{{ www_files.stdout_lines }}"
+
+- name: Find all files in var/log/nginx
+  ansible.builtin.command: >-
+    find /var/log/nginx
+  register: log_files
+
+- name: All log file permissions
+  ansible.builtin.file:
+    dest: '{{ item }}'
+    mode: u=rw,g=rw,o=r
+    owner: www-data
+    group: www-data
+  notify:
+    - Restart Nginx
+  loop: "{{ log_files.stdout_lines }}"
