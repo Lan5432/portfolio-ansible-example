@@ -4,7 +4,6 @@
     name: "{{ python_app_user }}"
     state: present
 
-
 - name: Create user holder for the Python app
   ansible.builtin.user: 
     name: '{{ python_app_user }}'
@@ -35,6 +34,14 @@
   ansible.builtin.pip:
     name: uWSGI
     virtualenv: '{{ python_app_folder_venv }}'
+
+- name: Define log file, with correct permissions
+  ansible.builtin.file:
+    path: '{{ python_app_log_file }}'
+    state: touch
+    mode: u=rw,g=r,o=r
+    owner: '{{ python_app_user }}'
+    group: '{{ python_app_user }}'
 
 - name: Add config for uwsgi
   ansible.builtin.template:
