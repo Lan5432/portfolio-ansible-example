@@ -1,0 +1,29 @@
+- name: Copy config
+  ansible.builtin.copy:
+    src: h5bp
+    dest: /etc/nginx
+    owner: root
+    group: root
+
+- name: Overwrite default site
+  ansible.builtin.template:
+    src: default.conf.j2
+    dest: '/etc/nginx/sites-available/default'
+    owner: www-data
+    group: www-data
+
+- name: Copy in the site config for the proxy
+  ansible.builtin.template:
+    src: proxy.conf.j2
+    dest: '/etc/nginx/sites-available/proxy.conf'
+    owner: www-data
+    group: www-data
+
+- name: Enable the proxy site config
+  ansible.builtin.file:
+    src: '/etc/nginx/sites-available/proxy.conf'
+    dest: '/etc/nginx/sites-enabled/proxy.conf'
+    state: link  
+  notify:
+    - Restart Nginx
+  when: not ansible_check_mode

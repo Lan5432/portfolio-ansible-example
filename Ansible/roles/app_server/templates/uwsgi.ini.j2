@@ -1,5 +1,5 @@
 [uwsgi]
-http = :{{ python_app_port }}
+http-socket = :{{ python_app_port }}
 wsgi-file = {{ python_app_folder }}/main.py
 callable = app
 logto = {{ python_app_log_file }}

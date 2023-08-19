@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  proxy_host:
+    build: .
+    container_name: proxy_host
+    ports:
+      - "2022:22"
+      - "9090:80"
+    depends_on:
+      - app_host
+
+  app_host:
+    build: .
+    container_name: app_host
+    ports:
+      - "2023:22"
+      - "9091:9091"
+      - "9092:9092"

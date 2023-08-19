@@ -1,18 +1,12 @@
 ---
 # handlers file for proxy_server
  - name: Start Nginx
-   become_method: su
-   become_user: www-data
-   become_flags: '-s /bin/sh'
    ansible.builtin.service:
      name: nginx
      state: started
 
      
  - name: Restart Nginx
-   become_method: su
-   become_user: www-data
-   become_flags: '-s /bin/sh'
    ansible.builtin.service:
      name: nginx
      state: reloaded

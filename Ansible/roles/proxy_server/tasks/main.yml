@@ -13,37 +13,10 @@
   notify:
    - Start Nginx
 
-- name: Copy config
-  ansible.builtin.copy:
-    src: h5bp
-    dest: /etc/nginx
-    owner: root
-    group: root
 
-- name: Disable default site
-  ansible.builtin.file:
-    dest: /etc/nginx/sites-enabled/default
-    state: absent
+- include_tasks: nginx_config.yml
+- include_tasks: static_files.yml
 
-
-- include_tasks: local_page.yml
-- include_tasks: apps_config.yml
-    
-    
-- name: Find all files in var/www
-  ansible.builtin.command: >-
-    find /var/www/ -path /var/www/html -prune -o -print -type f,d
-  register: www_files
-
-- name: All web permissions
-  ansible.builtin.file:
-    dest: '{{ item }}'
-    mode: u=rx,g=rx,o=rx
-    owner: www-data
-    group: www-data
-  notify:
-    - Restart Nginx
-  loop: "{{ www_files.stdout_lines }}"
 
 - name: Find all files in var/log/nginx
   ansible.builtin.command: >-
