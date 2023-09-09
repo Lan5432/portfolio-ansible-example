@@ -1,4 +1,6 @@
+# Diary
 This diary is mostly for myself as I stop and retake personal projects somewhat randomly depending on the day to day. And also so anyone can see my problem analysis.
+
 # Making the containers work via SSH
 - I'm not completely oblivious to SSH as this file might imply, but I just forget how it works from not having to set it up often.
 - First thing to mention, my PC is a Windows machine, so to more easily work with Linux style tools I installed the Windows Subsystem for Linux.
@@ -20,11 +22,17 @@ This diary is mostly for myself as I stop and retake personal projects somewhat 
 - I was getting too hung up on paths and IP resolution that I didn't realize that in the most basic example of a proxy (I assume they can get more complicated), you're meant to bind the hosts you proxy to, to the path of the host so you access them via its IP. So if your host is "www.host.com" one of your paths would be "www.host.com/a-proxy".
 - Issues with how to get the apps.conf file to answer for the "python" and "golang" paths, because I had an issue of these ending up in the local-page.conf site.
     - One idea I decided to apply was to create a default site to fall into, with a 404, at least as a clear sign that I'm doing something wrong.
+
+# Python
 - Whole odyssey about why my proxy to Python was failing with `connect() failed (111: Unknown error) while connecting to upstream`, the things I misunderstood:
     - I had misunderstood how uWSGI was working, I had put `http-socket` which means the server rises and talks HTTP through a port, as opposed to regular uWSGI. But then I had `uwsgi_pass` in my Nginx proxy, so I was talking uwsgi.
     - I was literally telling container A to talk to container B via "localhost", which makes no sense but I did not give it the proper thought. I then took advantage of the docker-compose networking to give container B's IP to container A via name resolution.
      
 
-# 
+# Go
+- Of course trying to use the [official guide for Go](https://go.dev/doc/effective_go) (as well as many other places for examples)
+- First time actually programming in Go, a handful of things I didn't quite get:
+    - Directory structure: I'm used to packages and namespaces (Java and C#) and I was having some issues with how to name and communicate the packages.
+    - 
 
 [Back to README.md](../README.md)

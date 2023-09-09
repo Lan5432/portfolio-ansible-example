@@ -1,3 +1,3 @@
 #!/bin/bash
-source ssh-agent.sh
-source compose.sh
+source scripts/ssh-agent.sh
+source scripts/compose.sh
