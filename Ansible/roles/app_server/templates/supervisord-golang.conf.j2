@@ -1,0 +1,9 @@
+[program:{{ golang_app_name }}]
+command={{ golang_app_folder_exe }}
+autostart=false
+autorestart=true
+process_name=%(program_name)s
+directory={{ golang_app_folder }}
+user={{ golang_app_user }}
+stdout_logfile={{ golang_app_log_file_stdout }}
+stderr_logfile={{ golang_app_log_file_stderr }}

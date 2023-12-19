@@ -1,15 +1,4 @@
 ---
-- name: Create group
-  ansible.builtin.group:
-    name: "{{ python_app_user }}"
-    state: present
-
-- name: Create user holder for the Python app
-  ansible.builtin.user: 
-    name: '{{ python_app_user }}'
-    group: '{{ python_app_user }}'
-    createhome: no
-
 - name: Install Python
   ansible.builtin.apt:
     pkg:
@@ -17,23 +6,32 @@
       - python3-virtualenv
     state: latest
     update_cache: true
+  tags: python-app
+
+- name: Create user holder for the Python app
+  ansible.builtin.user: 
+    name: '{{ python_app_user }}'
+    createhome: no
+  tags: python-app
 
 - name: Move Python files
   ansible.builtin.copy:
     src: python_flask/
     dest: '{{ python_app_folder }}'
     owner: '{{ python_app_user }}'
-    group: '{{ python_app_user }}'
+  tags: python-app
 
 - name: Configure with the dev modules
   ansible.builtin.pip:
     requirements: '{{ python_app_folder_requirements }}'
     virtualenv: '{{ python_app_folder_venv }}'
+  tags: python-app
 
 - name: Add uWSGI to the env
   ansible.builtin.pip:
     name: uWSGI
     virtualenv: '{{ python_app_folder_venv }}'
+  tags: python-app
 
 - name: Define log file, with correct permissions
   ansible.builtin.file:
@@ -41,16 +39,18 @@
     state: touch
     mode: u=rw,g=r,o=r
     owner: '{{ python_app_user }}'
-    group: '{{ python_app_user }}'
+  tags: python-app
 
 - name: Add config for uwsgi
   ansible.builtin.template:
     src: uwsgi.ini.j2
-    dest: '{{ python_app_folder }}/uwsgi.ini'
+    dest: '{{ python_app_folder_uwsgi_file }}'
     owner: '{{ python_app_user }}'
     group: '{{ python_app_user }}'
+  tags: python-app
 
 
 - name: Run uWSGI
   ansible.builtin.shell: >-
     {{ python_app_folder_venv }}/bin/uwsgi {{ python_app_folder }}/uwsgi.ini &
+  tags: python-app

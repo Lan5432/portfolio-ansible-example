@@ -4,13 +4,25 @@
 python_app_port: 4322
 python_app_user: alchemist
 python_app_log_file: "/var/log/python_app.log"
-python_app_folder: "/opt/flask_app"
+python_app_folder: "/opt/flask"
 python_app_folder_venv: '{{ python_app_folder }}/venv'
 python_app_folder_requirements: "{{ python_app_folder }}/requirements.txt"
+python_app_folder_uwsgi_file: "{{ python_app_folder }}/uwsgi.ini"
 
 golang_app_port: 9403
 golang_app_user: gopher
-golang_app_folder: "/opt/golang_app"
-golang_app_log_file: "/var/log/golang_app.log"
+golang_app_name: golang-app
+golang_app_log_file_stdout: "/var/log/{{ golang_app_name }}.out.log"
+golang_app_log_file_stderr: "/var/log/{{ golang_app_name }}.err.log"
+golang_app_supervisor_config_file: "/etc/supervisor/conf.d/{{ golang_app_name }}.conf"
+golang_app_folder: "/opt/golang"
+golang_app_folder_exe: "{{ golang_app_folder }}/{{ golang_app_name }}"
+golang_app_folder_config: "{{ golang_app_folder }}/config"
+golang_app_folder_templates: "{{ golang_app_folder }}/templates"
+golang_app_folder_config_file: "{{ golang_app_folder_config }}/config.json"
+
+supervisord_user: "super"
+supervisord_config_file: "/etc/supervisord.conf"
+supervisord_logfile: "/var/log/supervisord.log"
 
 

@@ -4,8 +4,15 @@
     update_cache: yes
     upgrade: yes
     cache_valid_time: 3600
+  tags:
+    - python-app
+    - golang-app
 
 - include_tasks: python_tasks.yml
+  tags: python-app
+
+- include_tasks: golang_tasks.yml
+  tags: golang-app
 
 
 

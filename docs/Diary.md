@@ -33,6 +33,10 @@ This diary is mostly for myself as I stop and retake personal projects somewhat 
 - Of course trying to use the [official guide for Go](https://go.dev/doc/effective_go) (as well as many other places for examples)
 - First time actually programming in Go, a handful of things I didn't quite get:
     - Directory structure: I'm used to packages and namespaces (Java and C#) and I was having some issues with how to name and communicate the packages.
-    - 
+
+# Supervisor
+- I'd always heard about this package to configure apps that didn't already come with a .service file for managing them like the usual installed packages, so I decided to give it a go. It was another ordeal as I had stumbled upon what seemed like a niche bug.
+    - It was: `[Errno 2] No such file or directory: file: /usr/lib/python3/dist-packages/supervisor/xmlrpc.py` and I found a handful of different solutions. The whole thing was because I wasn't starting the Supervisord daemon before trying to read config.
+    - I assume it was because, lacking the Supervisor daemon locally, it was trying to start up some library to get ready to contact a potential daemon outside the OS? But then again I wasn't sure why I was lacking that .py library.
 
 [Back to README.md](../README.md)

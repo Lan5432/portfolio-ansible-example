@@ -1,2 +1,67 @@
 ---
+- name: Create user holder for the Go app
+  ansible.builtin.user: 
+    name: '{{ golang_app_user }}'
+    createhome: no
+  tags: golang-app
 
+- name: Create base folder
+  ansible.builtin.file:
+    dest: '{{ golang_app_folder }}'
+    state: directory
+    owner: '{{ golang_app_user }}'
+  tags: golang-app
+
+- name: Move Go exe
+  ansible.builtin.copy:
+    src: golang/golang-app
+    dest: '{{ golang_app_folder_exe }}'
+    owner: '{{ golang_app_user }}'
+    mode: u=rwx,g=r,o=r
+  tags: golang-app
+
+- name: Copy config folder
+  ansible.builtin.copy:
+    src: golang/config/
+    dest: '{{ golang_app_folder_config }}/'
+    owner: '{{ golang_app_user }}'
+  tags: golang-app
+
+- name: Copy templates folder
+  ansible.builtin.copy:
+    src: golang/templates/
+    dest: '{{ golang_app_folder_templates }}/'
+    owner: '{{ golang_app_user }}'
+  tags: golang-app
+
+- name: Add primary config file for app
+  ansible.builtin.template:
+    src: golang-config.json.j2
+    dest: '{{ golang_app_folder_config_file }}'
+    owner: '{{ golang_app_user }}'
+  tags: golang-app
+
+- name: Define std log file, with correct permissions
+  ansible.builtin.file:
+    path: '{{ golang_app_log_file_stdout }}'
+    state: touch
+    owner: '{{ golang_app_user }}'
+    mode: u=rw,g=r,o=r
+  tags: golang-app
+  
+- name: Define err log file, with correct permissions
+  ansible.builtin.file:
+    path: '{{ golang_app_log_file_stderr }}'
+    state: touch
+    owner: '{{ golang_app_user }}'
+    mode: u=rw,g=r,o=r
+  tags: golang-app
+
+- include_tasks: supervisord_tasks.yml
+  tags: golang-app
+
+- name: Start Golang via Supervisor
+  community.general.supervisorctl:
+    name: '{{ golang_app_name }}'
+    state: started
+  tags: golang-app

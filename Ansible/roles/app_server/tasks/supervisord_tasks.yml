@@ -1,0 +1,25 @@
+---
+- name: Install Supervisor
+  ansible.builtin.apt:
+    name: supervisor
+    update_cache: yes
+  tags: golang-app
+
+- name: Start Supervisord daemon
+  ansible.builtin.service:
+    name: supervisor
+    state: started
+  tags: golang-app
+
+- name: Add config file for Golang
+  ansible.builtin.template:
+    src: supervisord-golang.conf.j2
+    dest: '{{ golang_app_supervisor_config_file }}'
+    owner: '{{ golang_app_user }}'
+  tags: golang-app
+
+- name: Update Supervisor with the new app
+  community.general.supervisorctl:
+    name: '{{ golang_app_name }}'
+    state: present
+  tags: golang-app

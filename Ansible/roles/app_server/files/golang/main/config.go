@@ -7,8 +7,8 @@ import (
 	"github.com/tkanos/gonfig"
 )
 
-const CONFIG_FILE = "main/config.json"
-const DEFAULT_CONFIG_FILE = "main/defaultConfig.json"
+const CONFIG_FILE = "config/config.json"
+const DEFAULT_CONFIG_FILE = "config/defaultConfig.json"
 
 type Config struct {
 	Port int
